@@ -1,0 +1,17 @@
+---
+kind: pipeline
+type: kubernetes
+name: build chart
+
+trigger:
+  paths:
+    include:
+      - "chart/*"
+
+steps:
+- name: Package and push chart
+  image: registry.192.168.178.48.nip.io/helm-build:latest
+  commands:
+    - helm lint chart/
+    - helm package chart/
+    - curl -X POST --data-binary @drone-runner-kube-`cat chart/Chart.yaml | grep "version:" | cut -d " " -f 2`.tgz -k https://charts.192.168.178.48.nip.io/api/charts

@@ -1,0 +1,34 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "backup.name" . | quote }}
+  labels:
+    {{- include "backup.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+        {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+        spec:
+          serviceAccountName: {{ include "backup.serviceAccountName" . }}
+          restartPolicy: {{ .Values.restartPolicy }}
+          containers:
+            - name: backup
+              image: {{ include "backup.image" . | quote }}
+              {{- if .Values.args }}
+              args: {{ .Values.args }}
+              {{- end }}
+              volumeMounts:
+                - name: config-volume
+                  mountPath: /conf
+          volumes:
+            - name: config-volume
+              configMap:
+                name: {{ include "backup.name" . }}-cm
+                  

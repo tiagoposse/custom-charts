@@ -1,0 +1,11 @@
+{{- if eq .Values.backupApp "default" -}}
+{{- printf "You need to specify backupApp with the name of the app this chart instance will backup up" -}}
+{{- end -}}
+
+{{- if not .Values.image.name) -}}
+{{- printf "Please specify an image name" -}}
+{{- end -}}
+
+{{- if not .Values.image.tag) -}}
+{{- printf "Please specify an image tag" -}}
+{{- end -}}

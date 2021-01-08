@@ -1,0 +1,45 @@
+# Default values for backup.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+backupApp: default
+
+image:
+  repository: ""
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+schedule: "00 6 * * *"
+startingDeadlineSeconds: 100
+restartPolicy: OnFailure
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+minio:
+  addr: ""
+  bucket: ""
+
+backupConfigs: {}
+
+logLevel: INFO

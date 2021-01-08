@@ -22,8 +22,8 @@ local Pipeline(component) = {
       name: "Package and push chart",
       image: "registry.192.168.178.48.nip.io/cluster-droid:0.1.2",
       commands: [
-        'helm lint chart/',
-        'helm package chart/',
+        'helm lint ' + component.name + '/',
+        'helm package ' + component.name + '/',
         'curl -X POST --data-binary @drone-runner-kube-`cat chart/Chart.yaml | grep "version:" | cut -d " " -f 2`.tgz -k https://charts.192.168.178.48.nip.io/api/charts',
       ],
     },

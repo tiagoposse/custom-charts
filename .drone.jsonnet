@@ -24,7 +24,7 @@ local Pipeline(component) = {
       commands: [
         'helm lint ' + component.name + '/',
         'helm package ' + component.name + '/',
-        'curl -X POST --data-binary @drone-runner-kube-`cat ' + component.name + '/Chart.yaml | grep "version:" | cut -d " " -f 2`.tgz -k https://charts.192.168.178.48.nip.io/api/charts',
+        'curl -X POST --data-binary @drone-runner-kube-`cat ' + component.name + '/Chart.yaml | grep "version:" | cut -d " " -f 2`.tgz -k https://charts.192.168.178.48.xip.io/api/charts',
       ],
     }
   ]

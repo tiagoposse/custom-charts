@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: drone
       protocol: TCP
-      name: http
+      name: drone
   selector:
     {{- include "drone.selectorLabels" . | nindent 4 }}

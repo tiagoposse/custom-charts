@@ -39,13 +39,14 @@ spec:
           args: {{ .Values.image.args }}
           {{- end }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: drone
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: drone
+              scheme: HTTPS
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           envFrom:

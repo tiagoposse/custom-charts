@@ -1,0 +1,43 @@
+---
+kind: pipeline
+type: kubernetes
+name: drone
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Package and push chart
+  image: registry.tiagoposse.com/cluster-droid:0.1.2
+  commands:
+  - helm lint drone/
+  - helm package drone/
+  - curl -X POST --data-binary @drone-`cat drone/Chart.yaml | grep "version:" | cut -d " " -f 2`.tgz -k https://charts.tiagoposse.com/api/charts
+
+trigger:
+  paths:
+  - drone/*
+
+---
+kind: pipeline
+type: kubernetes
+name: drone-runner-kube
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: Package and push chart
+  image: registry.192.168.178.48.nip.io/cluster-droid:0.1.2
+  commands:
+  - helm lint drone-runner-kube/
+  - helm package drone-runner-kube/
+  - curl -X POST --data-binary @drone-runner-kube-`cat drone-runner-kube/Chart.yaml | grep "version:" | cut -d " " -f 2`.tgz -k https://charts.tiagoposse.com/api/charts
+
+trigger:
+  paths:
+  - drone-runner-kube/*
+
+...
